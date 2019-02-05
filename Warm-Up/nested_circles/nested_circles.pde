@@ -38,7 +38,7 @@ void draw3circ2(float theta, float r1, float x, float y) {
   }
 }
 void draw3circ3(float theta, float r1, float x, float y) {
-  float originalTheta = theta;
+  float originalTheta = theta; //<>//
   for(int i = 0; i < 3; i++) {
     fill (255,91,246);
     float radius = (500 - mouseY)/500.0 * (r1 * 2 * r2);

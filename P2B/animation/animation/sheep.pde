@@ -1,44 +1,3 @@
-// 3D Scene Example
-
-float time = 0;  // keep track of passing of time
-
-void setup() {
-  size(800, 800, P3D);  // must use 3D here !!!
-  noStroke();           // do not draw the edges of polygons
-}
-
-// Draw a scene with a cylinder, a sphere and a box
-void draw() {
-  
-  resetMatrix();  // set the transformation matrix to the identity (important!)
-
-  background(146, 223, 105);  // clear the screen to black
-
-  // set up for perspective projection
-  perspective (PI * 0.333, 1.0, 0.01, 1000.0);
-
-  // place the camera in the scene (just like gluLookAt())
-  camera (0.0, 0.0, 85.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
-    
-  // create an ambient light source
-  ambientLight (102, 102, 102);
-
-  // create two directional light sources
-  lightSpecular (204, 204, 204);
-  directionalLight (102, 102, 102, -0.7, -0.7, -1);
-  directionalLight (152, 152, 152, 0, 0, -1);
-  
-  //Body
-  pushMatrix();
-  rotate (time, 0.0, 1.0, 0.0);
-  body();
-  popMatrix();
-
-  time += 0.03;
-}
-
-// Draw a cylinder of a given radius, height and number of sides.
-// The base is on the y=0 plane, and it extends vertically in the y direction.
 void cylinder (float radius, float height, int sides) {
   int i,ii;
   float []c = new float[sides];
@@ -96,7 +55,13 @@ void floof (float x, float y, float z) {
   specular (0, 0, 0);
   shininess (1.0);
   
-  translate (x, y, z);
+  if(time < 3) {
+    translate (x, y, z);
+  }
+  else {
+    translate (-10,y+time,0);
+  }
+  
   sphere (4);
 
   popMatrix(); 
@@ -138,72 +103,85 @@ void body() {
   legs(8, 8, 4);
   legs(8, 8, -4);
   
-  floof(0, 10, 8);
-  floof(-3, -10, 8);
-  floof(2, 0, 12);
-  floof(-5, 4, 10);
-  floof(8, 7, 8);
-  floof(-7, -8, 8);
-  floof(-1, -9, 8);
-  floof(6, -6, 11);
-  floof(-3, 0, 12);
-  floof(5, -1, 11);
-  floof(1, 8, 8);
-  floof(-11, 6, 5);
-  floof(-10, 4, 7);
-  floof(-9, 0, 10);
-  floof(-10, -4, 7);
-  floof(4, 3, 12);
-  floof(13, 4, 7);
-  floof(12, -2, 7);
-  floof(-3,-3,11);
-  floof(10, -8, 7);
-  floof(6, -9, 7);
-  floof(0, -5, 10);
-  floof(-6,9, 7);
-  floof(-2, 4, 11);
-  floof(8, 0, 11);
-  floof(0, 10, -8);
-  floof(-3, -10, -8);
-  floof(2, 0, -12);
-  floof(-5, 4, -10);
-  floof(8, 7, -8);
-  floof(-7, -8, -8);
-  floof(-1, -9, -8);
-  floof(6, -6, -11);
-  floof(-3, 0, -12);
-  floof(5, -1, -11);
-  floof(1, 8, -8);
-  floof(-11, 6, -5);
-  floof(-10, 4, -7);
-  floof(-9, 0, -10);
-  floof(-10, -4, -7);
-  floof(4, 3, -12);
-  floof(13, 4, -7);
-  floof(12, -2, -7);
-  floof(-3,-3,-11);
-  floof(10, -8, -7);
-  floof(6, -9, -7);
-  floof(0, -5, -10);
-  floof(-6,9, -7);
-  floof(-2, 4, -11);
-  floof(8, 0, -11);
-  floof(10,-10, 0);
-  floof(-10,-10, 0);
-  floof(0,-11,0);
-  floof(2,-12,1);
-  floof(-4,-11,2);
-  floof(5,-11,2);
-  floof(-5,-11,-2);
-  floof(-3,-12,3);
-  floof(3,-12,-2);
-  floof(12, 8, 0);
-  floof(11, -7, 1);
-  floof(11, 7,-1);
-  floof(14, 5, 0);
-  floof(14, -2, 0);
-  floof(14, -3,2);
-  floof(14, -5,-2);
+  //first line
+  floof(-10,-10,0);
+ //if (time < 2) {
+ //   floof(-10,-10, 0);
+ // }
+ // else {
+ //   fall(-10,-10,0);
+ // } 
+  
+  //floof(-8, -8, -1);
+  //floof(-10, -4, 7);
+  //floof(-10, -4, -7);
+  //floof(-9, 0, -10);
+  //floof(-9, 0, 10);
+  //floof(-10, 4, 7);
+  //floof(-10, 4, -7);
+  //floof(-11, 6, -5);
+  //floof(-11, 6, 5);
+  //floof(-6,9, 7);
+  //floof(-6,9, -7);
+  
+  //second line
+  //floof(-3,-12,3);
+  //floof(-4,-11,2);
+  //floof(-5,-11,-2);
+  //floof(-3, -10, 8);
+  //floof(-3, -10, -8);
+  //floof(-1, -9, 8);
+  //floof(-1, -9, -8);
+  //floof(0, -5, -10);
+  //floof(-3,-3,-11);
+  //floof(-3,-3,11);
+  //floof(-3, 0, -12);
+  //floof(-3, 0, 12);
+  //floof(-5, 4, 10);
+  //floof(-2, 4, 11);
+  //floof(-5, 4, -10);
+  //floof(-2, 4, -11);
+  //floof(0, 10, 8);
+  
+  //third line
+  //floof(3,-12,-2);
+  //floof(2,-12,1);
+  //floof(5,-11,2);
+  //floof(0,-11,0);
+  //floof(0, -5, 10);
+  //floof(5, -1, 11);
+  //floof(5, -1, -11);
+  //floof(2, 0, -12);
+  //floof(2, 0, 12);
+  //floof(4, 3, 12);
+  //floof(4, 3, -12);
+  //floof(1, 8, 8);
+  //floof(1, 8, -8);
+  //floof(0, 10, -8);
+
+  //fouth line
+  //floof(10,-10, 0);
+  //floof(6, -9, 7);
+  //floof(6, -9, -7);
+  //floof(10, -8, 7);
+  //floof(10, -8, -7);
+  //floof(11, -7, 1);
+  //floof(6, -6, 11);
+  //floof(6, -6, -11);
+  //floof(14, -5,-2);
+  //floof(14, -3,2);
+  //floof(12, -2, 7);
+  //floof(12, -2, -7);
+  //floof(14, -2, 0);
+  //floof(8, 0, 11);
+  //floof(8, 0, -11);
+  //floof(13, 4, 7);
+  //floof(13, 4, -7);
+  //floof(14, 5, 0);
+  //floof(8, 7, 8);
+  //floof(11, 7,-1);
+  //floof(8, 7, -8);
+  //floof(12, 8, 0);
   
   //Tail
   tail();
@@ -257,7 +235,9 @@ void head() {
   specular (0, 0, 0);
   shininess (1.0);
   
+
   translate (-17, -1, 0);
+
   sphereDetail (40);
   sphere (6);
 

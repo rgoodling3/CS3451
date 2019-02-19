@@ -9,12 +9,12 @@ void draw() {
   background(146, 223, 105);
   // set up for perspective projection
   perspective (PI * 0.333, 1.0, 0.01, 1000.0);
-
-   //place the camera in the scene (just like gluLookAt())
-  if (time < 18.0) {
-    camera (0.0 - (time * 4), 0.0, 85.0 - (time * 4), 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
+  //place the camera in the scene (just like gluLookAt())
+  float t = 30.0;
+  if (time < t) {
+    camera (0.0 - (3*time), 0.0, 85.0 - (2*time), 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
   } else {
-    camera (-72, 0.0, 13, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
+    camera (-t*3.0, 0.0, 85 - (2*t), 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
   }
   // create an ambient light source
   ambientLight (102, 102, 102);
@@ -26,15 +26,12 @@ void draw() {
   
   //Body
   pushMatrix();
-  //rotate (time, 0.0, 1.0, 0.0);
   body();
+  popMatrix();
+  
+  pushMatrix();
+  shaver();
   popMatrix();
 
   time += 0.03;
-}
-
-void fall(float x, float y, float z) {
-  for(float count = y; count < 10 - y; count++){
-    floof(x,count, z);
-  }
 }

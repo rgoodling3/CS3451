@@ -47,7 +47,7 @@ void cylinder (float radius, float height, int sides) {
   }
 }
 
-void floof (float x, float y, float z) {
+void floof (float x, float y, float z, float t) {
   pushMatrix();
 
   fill (240, 240, 240);
@@ -55,11 +55,13 @@ void floof (float x, float y, float z) {
   specular (0, 0, 0);
   shininess (1.0);
   
-  if(time < 3) {
+  if(time < t) {
     translate (x, y, z);
   }
-  else {
-    translate (-10,y+time,0);
+  else if (y+(5 *(time/t)) < 15) {
+    translate (x,y+(5 *(time/t)),z);
+  } else {
+    translate(x, 15, z);
   }
   
   sphere (4);
@@ -104,30 +106,23 @@ void body() {
   legs(8, 8, -4);
   
   //first line
-  floof(-10,-10,0);
- //if (time < 2) {
- //   floof(-10,-10, 0);
- // }
- // else {
- //   fall(-10,-10,0);
- // } 
-  
-  //floof(-8, -8, -1);
-  //floof(-10, -4, 7);
-  //floof(-10, -4, -7);
-  //floof(-9, 0, -10);
-  //floof(-9, 0, 10);
-  //floof(-10, 4, 7);
-  //floof(-10, 4, -7);
-  //floof(-11, 6, -5);
-  //floof(-11, 6, 5);
-  //floof(-6,9, 7);
-  //floof(-6,9, -7);
+  floof(-10,-10,0, 3);  
+  floof(-8, -8, -1, 3.3);
+  floof(-10, -4, 7, 4);
+  floof(-10, -4, -7, 4);
+  floof(-9, 0, -10, 4.2);
+  floof(-9, 0, 10, 4.2);
+  floof(-10, 4, 7, 5);
+  floof(-10, 4, -7, 5);
+  floof(-11, 6, -5, 5.2);
+  floof(-11, 6, 5, 5.2);
+  floof(-6,9, 7, 5.5);
+  floof(-6,9, -7, 5.5);
   
   //second line
-  //floof(-3,-12,3);
-  //floof(-4,-11,2);
-  //floof(-5,-11,-2);
+  //floof(-3,-12,3, 9);
+  //floof(-4,-11,2, 9.1);
+  //floof(-5,-11,-2, 9.2);
   //floof(-3, -10, 8);
   //floof(-3, -10, -8);
   //floof(-1, -9, 8);
@@ -187,7 +182,10 @@ void body() {
   tail();
   
   //Head
+  pushMatrix();
+  rotate(sin(time), 1.0, 0.0, 0.0);
   head();
+  popMatrix();
 }
 
 void nose() {

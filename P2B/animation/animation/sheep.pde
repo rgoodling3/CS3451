@@ -184,10 +184,16 @@ floof(3,-12,-2,25.5, 10);
   tail();
   
   //Head
-  pushMatrix();
-  rotate(sin(time), 1.0, 0.0, 0.0);
-  head();
-  popMatrix();
+  if(fur == 1) {
+    pushMatrix();
+    rotate(sin(time), 1.0, 0.0, 0.0);
+    head();
+    popMatrix();
+  } else {
+    pushMatrix();
+    head();
+    popMatrix();
+  }
 }
 
 void nose() {

@@ -28,7 +28,7 @@ void shaver() {
 void razerbody() {
   pushMatrix();
   pushMatrix();
-  fill (200, 60, 60);       // "fill" sets both diffuse and ambient color (yuck!)
+  fill (200, 60, 60);       // "fill" sets both diffuse and ambient color
   ambient (50, 50, 50);      // set ambient color
   specular (200, 65, 65);   // set specular color
   shininess (1.0);            // set specular exponent

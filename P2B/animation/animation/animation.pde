@@ -20,9 +20,6 @@ void draw() {
   perspective (PI * 0.333, 1.0, 0.01, 1000.0);
   //place the camera in the scene (just like gluLookAt())
   float t = 30.0;
-  //if (time <10) {
-  //camera (-90, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
-  //}
   if (time < t) {
     camera (-90 + (3*time), 0.0, 25.0 + (2*time), 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
   } else {
@@ -58,8 +55,18 @@ void draw() {
   }
   time += 0.03;
   
-  if (frameCount > 1335) {
+  if (frameCount > 1340) {
     background(newbg);
+    camera (0.0, 0.0, 85, 0.0, 0.0, -1.0, 0.0, 1.0, 0.0);
+    fill(0,0,0);
+    text("All Clean!", -30, -37, 0);
+    pushMatrix();
+    translate(0, 20, 0);
+    rotate(2,0, 270, 0);
     body(0);
+    popMatrix();
+  }
+  if (frameCount > 1440) {
+    exit();
   }
 }

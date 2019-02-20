@@ -84,7 +84,7 @@ void legs(float x, float y, float z) {
   popMatrix();
 }
 
-void body() {
+void body(int fur) {
   pushMatrix();
 
   fill (240, 240, 240);
@@ -105,6 +105,7 @@ void body() {
   legs(8, 8, 4);
   legs(8, 8, -4);
   
+  if (fur == 1) {
   //first line
   floof(-10,-10,0, 2.5, 5);  
   floof(-8, -8, -1, 3, 5);
@@ -177,6 +178,7 @@ floof(3,-12,-2,25.5, 10);
   floof(11, 7,-1, 38.8, 15);
   floof(8, 7, -8, 38.8, 15);
   floof(12, 8, 0, 40, 15);
+  }
   
   //Tail
   tail();

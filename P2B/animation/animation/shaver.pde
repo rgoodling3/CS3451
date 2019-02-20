@@ -1,25 +1,25 @@
 void shaver() {
   if(time < 6.51) {
     //Down first row
-    translate (-9, -15 + (4*count), 14);
+    translate (-9, -15 + (4*count), 0);
   } else if(time < 12.03) {
     //Diagonal from one to two
-    translate(-9 + (1.23*count), 10.92 - (4.8 * count), 14);
+    translate(-9 + (1.23*count), 10.92 - (4.8 * count), 0);
   } else if(time < 18.54) {
     //Down second row
-    translate (-2, -15 + (4*count), 14);
+    translate (-2, -15 + (4*count), 0);
   } else if (time < 24.06) {
     //Diagonal from two to three
-    translate(-2 + (1.23*count), 10.92 - (4.8 * count), 14);
+    translate(-2 + (1.23*count), 10.92 - (4.8 * count), 0);
   } else if (time < 30.56) {
     //Down thrid row
-    translate (5, -15 + (4*count), 14);
+    translate (5, -15 + (4*count), 0);
   } else if (time < 35.09) {
     //Diagonal from three to four
-    translate(5 + (1.23*count), 10.92 - (4.8 * count), 14);
+    translate(5 + (1.23*count), 10.92 - (4.8 * count), 0);
   } else if (time < 40) {
     //Fourth row down 
-    translate (10.535, -10.68 + (4*count), 14);
+    translate (10.535, -10.68 + (4*count), 0);
   }
   razerbody();
   popMatrix();

@@ -47,7 +47,7 @@ void cylinder (float radius, float height, int sides) {
   }
 }
 
-void floof (float x, float y, float z, float t) {
+void floof (float x, float y, float z, float t, int multi) {
   pushMatrix();
 
   fill (240, 240, 240);
@@ -58,8 +58,8 @@ void floof (float x, float y, float z, float t) {
   if(time < t) {
     translate (x, y, z);
   }
-  else if (y+(5 *(time/t)) < 15) {
-    translate (x,y+(5 *(time/t)),z);
+  else if (y+(multi *(time/t)) < 14.7) {
+    translate (x,y+(multi *(time/t)),z);
   } else {
     translate(x, 15, z);
   }
@@ -106,77 +106,77 @@ void body() {
   legs(8, 8, -4);
   
   //first line
-  floof(-10,-10,0, 3);  
-  floof(-8, -8, -1, 3.3);
-  floof(-10, -4, 7, 4);
-  floof(-10, -4, -7, 4);
-  floof(-9, 0, -10, 4.2);
-  floof(-9, 0, 10, 4.2);
-  floof(-10, 4, 7, 5);
-  floof(-10, 4, -7, 5);
-  floof(-11, 6, -5, 5.2);
-  floof(-11, 6, 5, 5.2);
-  floof(-6,9, 7, 5.5);
-  floof(-6,9, -7, 5.5);
+  floof(-10,-10,0, 2.5, 5);  
+  floof(-8, -8, -1, 3, 5);
+  floof(-10, -4, 7, 3.5, 5);
+  floof(-10, -4, -7, 3.5, 5);
+  floof(-9, 0, -10, 4.2, 5);
+  floof(-9, 0, 10, 4.2, 5);
+  floof(-10, 4, 7, 5, 5);
+  floof(-10, 4, -7, 5, 5);
+  floof(-11, 6, -5, 5.2, 5);
+  floof(-11, 6, 5, 5.2, 5);
+  floof(-6,9, 7, 5.5, 5);
+  floof(-6,9, -7, 5.5, 5);
   
   //second line
-  //floof(-3,-12,3, 9);
-  //floof(-4,-11,2, 9.1);
-  //floof(-5,-11,-2, 9.2);
-  //floof(-3, -10, 8);
-  //floof(-3, -10, -8);
-  //floof(-1, -9, 8);
-  //floof(-1, -9, -8);
-  //floof(0, -5, -10);
-  //floof(-3,-3,-11);
-  //floof(-3,-3,11);
-  //floof(-3, 0, -12);
-  //floof(-3, 0, 12);
-  //floof(-5, 4, 10);
-  //floof(-2, 4, 11);
-  //floof(-5, 4, -10);
-  //floof(-2, 4, -11);
-  //floof(0, 10, 8);
+  floof(-3,-12,3, 14, 15);
+  floof(-4,-11,2, 14.1, 15);
+  floof(-5,-11,-2, 14.2, 15);
+  floof(-3, -10, 8, 14.8, 15);
+  floof(-3, -10, -8, 14.8, 15);
+  floof(-1, -9, 8, 15.1, 15);
+  floof(-1, -9, -8, 15.1, 15);
+  floof(0, -5, -10, 15.3, 15);
+  floof(-3,-3,-11, 16, 15);
+  floof(-3,-3,11, 16, 15);
+  floof(-3, 0, -12, 16.5, 15);
+  floof(-3, 0, 12, 16.5, 15);
+  floof(-5, 4, 10, 17, 15);
+  floof(-2, 4, 11,17, 15);
+  floof(-5, 4, -10, 17, 15);
+  floof(-2, 4, -11, 17, 15);
+  floof(0, 10, 8, 17, 15);
   
   //third line
-  //floof(3,-12,-2);
-  //floof(2,-12,1);
-  //floof(5,-11,2);
-  //floof(0,-11,0);
-  //floof(0, -5, 10);
-  //floof(5, -1, 11);
-  //floof(5, -1, -11);
-  //floof(2, 0, -12);
-  //floof(2, 0, 12);
-  //floof(4, 3, 12);
-  //floof(4, 3, -12);
-  //floof(1, 8, 8);
-  //floof(1, 8, -8);
-  //floof(0, 10, -8);
+floof(3,-12,-2,25.5, 10);
+  floof(2,-12,1, 25.5, 10);
+  floof(5,-11,2,26, 10);
+  floof(0,-11,0,26, 10);
+  floof(0, -5, 10,27, 10);
+  floof(5, -1, 11,27.5, 10);
+  floof(5, -1, -11,27.5, 10 );
+  floof(2, 0, -12,28, 10);
+  floof(2, 0, 12,28, 10);
+  floof(4, 3, 12,28.5, 10);
+  floof(4, 3, -12,28.5, 10);
+  floof(1, 8, 8,29, 10);
+  floof(1, 8, -8,29, 10);
+  floof(0, 10, -8, 29.5, 10);
 
   //fouth line
-  //floof(10,-10, 0);
-  //floof(6, -9, 7);
-  //floof(6, -9, -7);
-  //floof(10, -8, 7);
-  //floof(10, -8, -7);
-  //floof(11, -7, 1);
-  //floof(6, -6, 11);
-  //floof(6, -6, -11);
-  //floof(14, -5,-2);
-  //floof(14, -3,2);
-  //floof(12, -2, 7);
-  //floof(12, -2, -7);
-  //floof(14, -2, 0);
-  //floof(8, 0, 11);
-  //floof(8, 0, -11);
-  //floof(13, 4, 7);
-  //floof(13, 4, -7);
-  //floof(14, 5, 0);
-  //floof(8, 7, 8);
-  //floof(11, 7,-1);
-  //floof(8, 7, -8);
-  //floof(12, 8, 0);
+  floof(10,-10, 0, 36, 15);
+  floof(6, -9, 7, 36.2, 15);
+  floof(6, -9, -7, 36.2, 15);
+  floof(10, -8, 7, 36.5, 15);
+  floof(10, -8, -7, 36.5, 15);
+  floof(11, -7, 1, 36.8, 15);
+  floof(6, -6, 11, 37, 15);
+  floof(6, -6, -11,37, 15);
+  floof(14, -5,-2, 37.2, 15);
+  floof(14, -3,2, 37.5, 15);
+  floof(12, -2, 7, 37.8, 15);
+  floof(12, -2, -7,37.8, 15);
+  floof(14, -2, 0,37.8, 15);
+  floof(8, 0, 11, 38, 15);
+  floof(8, 0, -11, 38, 15);
+  floof(13, 4, 7, 38.5, 15);
+  floof(13, 4, -7, 38.5, 15);
+  floof(14, 5, 0, 38.8, 15);
+  floof(8, 7, 8, 38.8, 15);
+  floof(11, 7,-1, 38.8, 15);
+  floof(8, 7, -8, 38.8, 15);
+  floof(12, 8, 0, 40, 15);
   
   //Tail
   tail();

@@ -137,22 +137,13 @@ class Cone extends Shape {
       PVector normal = new PVector(0,1,0);
       return normal;
     }
-    PVector direction = r.getdirection();
-    PVector origin = r.getorigin();
-    
-    float xnot = origin.x;
-    float ynot = origin.y;
-    float znot = origin.z;
-    float dx = direction.x;
-    float dy = direction.y;
-    float dz = direction.z;
-    
-    float x = xnot + dx*arr[3];
-    float z = znot + dz*arr[3];
-    float y = ynot + dy*arr[3];
     float xb = s.x;
     float zb = s.z;
-    PVector norm = new PVector(x - xb, -y/k, z-zb);
+    float yb = s.y;
+    
+    PVector t1 = new PVector(zb - arr[2], 0, arr[0] - xb);
+    PVector t2 = new PVector(xb - arr[0], yb - arr[1], zb - arr[2]);
+    PVector norm = t1.cross(t2);
     return norm.normalize();
   }
   PVector getCenter() {

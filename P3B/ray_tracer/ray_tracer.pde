@@ -230,15 +230,16 @@ void draw_scene() {
         for (Light l:lights) {
           PVector lightpos = (PVector.sub(l.getlightpos(), hitpos)).normalize();
           Ray shadowRay = new Ray();
-          shadowRay.origin(hitpos.x,hitpos.y,hitpos.z);
+          shadowRay.origin(hitpos.x + .0001 * normal.x,hitpos.y+ .0001 * normal.y,hitpos.z+ .0001 * normal.z);
           boolean shadowmaybe = false;
-          shadowRay.direction(lightpos.x - hitpos.x, lightpos.y - hitpos.y,lightpos.z - hitpos.z);
+          PVector shaddir = new PVector(l.getlightpos().x - hitpos.x, l.getlightpos().y - hitpos.y,l.getlightpos().z - hitpos.z);
+          shadowRay.direction(shaddir.normalize().x, shaddir.normalize().y,shaddir.normalize().z);
           for (Shape sha:shapes) {
             if(sha == hitobj) {
               continue;
             }
             float[] shadowCheck = sha.checkInter(shadowRay);
-            if (shadowCheck[0] > 0 && shadowCheck[0] < 1) {
+            if (shadowCheck[0] > 0 && shadowCheck[0] < 1) { //there is a shadow
               shadowmaybe = true; 
               break;
             }
@@ -251,22 +252,36 @@ void draw_scene() {
           PVector eyeNormal = hold.normalize();
           PVector halfAngleVec = PVector.add(eyeNormal, lightpos);
           halfAngleVec = halfAngleVec.normalize();
+          
           pxcolorD[0] += l.getRGB()[0] * max(0, PVector.dot(normal,lightpos));
           pxcolorD[1] += l.getRGB()[1] * max(0, PVector.dot(normal,lightpos));
           pxcolorD[2] += l.getRGB()[2] * max(0, PVector.dot(normal,lightpos));
           
-          pxcolorS[0] += l.getRGB()[0] * max(0, PVector.dot(normal,halfAngleVec));
-          pxcolorS[1] += l.getRGB()[1] * max(0, PVector.dot(normal,halfAngleVec));
-          pxcolorS[2] += l.getRGB()[2] * max(0, PVector.dot(normal,halfAngleVec));
+          pxcolorS[0] += l.getRGB()[0] * pow(max(0, PVector.dot(normal,halfAngleVec)),hitobj.getSurface().getP());
+          pxcolorS[1] += l.getRGB()[1] * pow(max(0, PVector.dot(normal,halfAngleVec)),hitobj.getSurface().getP());
+          pxcolorS[2] += l.getRGB()[2] * pow(max(0, PVector.dot(normal,halfAngleVec)),hitobj.getSurface().getP());
           
+          pxcolorD[0] *= hitobj.getSurface().getCdr();
+          pxcolorD[1] *= hitobj.getSurface().getCdg();
+          pxcolorD[2] *= hitobj.getSurface().getCdb();
+          
+          pxcolorS[0] *= hitobj.getSurface().getCsr();
+          pxcolorS[1] *= hitobj.getSurface().getCsg();
+          pxcolorS[2] *= hitobj.getSurface().getCsb();
         }
-        pxcolorD[0] *= hitobj.getSurface().getCdr();
-        pxcolorD[1] *= hitobj.getSurface().getCdg();
-        pxcolorD[2] *= hitobj.getSurface().getCdb();
         
-        pxcolorS[0] *= hitobj.getSurface().getCsr();
-        pxcolorS[1] *= hitobj.getSurface().getCsg();
-        pxcolorS[2] *= hitobj.getSurface().getCsb();
+        Ray vRay = new Ray();
+        vRay.origin(hitpos.x,hitpos.y,hitpos.z);
+        vRay.direction(hitpos.x - eyex,hitpos.y-eyey,hitpos.z-eyez);
+        Ray reflectRay = new Ray();
+        reflectRay.origin(hitpos.x,hitpos.y,hitpos.z);
+        float rayCal = 2 * PVector.dot(normal, vRay.getdirection());
+        PVector moreRayCalc = PVector.mult(normal,rayCal);
+        moreRayCalc = PVector.sub(moreRayCalc,vRay.getdirection());
+        moreRayCalc = moreRayCalc.normalize();
+        reflectRay.direction(moreRayCalc.x,moreRayCalc.y,moreRayCalc.z);
+        
+        
         
         pxcolor[0] = pxcolorD[0] + pxcolorS[0] + pxcolorR[0] + hitobj.getSurface().getCar();
         pxcolor[1] = pxcolorD[1] + pxcolorS[1] + pxcolorR[1] + hitobj.getSurface().getCag();

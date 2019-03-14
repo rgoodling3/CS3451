@@ -43,4 +43,10 @@ class Surface {
   float getCsb() {
     return surface[8];
   }
+  float getP() {
+    return surface[9];
+  }
+  float getK() {
+    return surface[10];
+  }
 }

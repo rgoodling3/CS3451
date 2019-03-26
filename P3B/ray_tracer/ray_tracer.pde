@@ -182,10 +182,6 @@ void draw_scene() {
   System.out.println(shapes);
   for(int y = 0; y < height; y++) {
     for(int x = 0; x < width; x++) {
-      float[] pxcolor = new float[3];
-      float[] pxcolorD = new float[3];
-      float[] pxcolorS = new float[3];
-      float[] pxcolorR = new float[3];
       // create and cast an eye ray
       float d = 1.0/tan(radians(fov)/2.0);
       float u = -1 + (2 * x/float(width));
@@ -197,8 +193,21 @@ void draw_scene() {
       float zprime = u * uz + v * vz - d * wz;
       r.direction(xprime,yprime,zprime);
       
-      //System.out.println("Origin" + eyex + " " + eyey + " " + eyez);
-      //System.out.println("Direction " + xprime + " " + yprime + " " + zprime);
+      //findColor(r);
+      
+      float[] pxcolor = findColor(r, 0);
+      //set the pixel color
+      fill (pxcolor[0]*255, pxcolor[1]*255, pxcolor[2]*255);   // you should put the correct pixel color here, converting from [0,1] to [0,255]
+      rect (x, y, 1, 1);   // make a tiny rectangle to fill the pixel
+    }
+  }
+}
+
+float[] findColor(Ray r, int depth) {
+      float[] pxcolor = new float[3];
+      float[] pxcolorD = new float[3];
+      float[] pxcolorS = new float[3];
+      float[] pxcolorR = new float[3];
       float mint = 9999;
       Shape hitobj = null;
       float t3 = 0.0;
@@ -233,7 +242,8 @@ void draw_scene() {
           shadowRay.origin(hitpos.x + .0001 * normal.x,hitpos.y+ .0001 * normal.y,hitpos.z+ .0001 * normal.z);
           boolean shadowmaybe = false;
           PVector shaddir = new PVector(l.getlightpos().x - hitpos.x, l.getlightpos().y - hitpos.y,l.getlightpos().z - hitpos.z);
-          shadowRay.direction(shaddir.normalize().x, shaddir.normalize().y,shaddir.normalize().z);
+          shaddir = shaddir.normalize();
+          shadowRay.direction(shaddir.x, shaddir.y,shaddir.z);
           for (Shape sha:shapes) {
             if(sha == hitobj) {
               continue;
@@ -270,31 +280,30 @@ void draw_scene() {
           pxcolorS[2] *= hitobj.getSurface().getCsb();
         }
         
-        Ray vRay = new Ray();
-        vRay.origin(hitpos.x,hitpos.y,hitpos.z);
-        vRay.direction(hitpos.x - eyex,hitpos.y-eyey,hitpos.z-eyez);
-        Ray reflectRay = new Ray();
-        reflectRay.origin(hitpos.x,hitpos.y,hitpos.z);
-        float rayCal = 2 * PVector.dot(normal, vRay.getdirection());
-        PVector moreRayCalc = PVector.mult(normal,rayCal);
-        moreRayCalc = PVector.sub(moreRayCalc,vRay.getdirection());
-        moreRayCalc = moreRayCalc.normalize();
-        reflectRay.direction(moreRayCalc.x,moreRayCalc.y,moreRayCalc.z);
-        
-        
+        if (hitobj.getSurface().getK() > 0 && depth < 10) {
+          Ray vRay = new Ray();
+          vRay.origin(hitpos.x + .0001 * normal.x,hitpos.y + .0001 * normal.y,hitpos.z + .0001 * normal.z);
+          vRay.direction(eyex - hitpos.x, eyey - hitpos.y, eyez - hitpos.z);
+          Ray reflectRay = new Ray();
+          reflectRay.origin(hitpos.x + .0001 * normal.x,hitpos.y+ .0001 * normal.y,hitpos.z+ .0001 * normal.z);
+          float rayCal = 2 * PVector.dot(normal, vRay.getdirection().normalize());
+          PVector moreRayCalc = PVector.mult(normal,rayCal);
+          moreRayCalc = PVector.sub(moreRayCalc,vRay.getdirection());
+          moreRayCalc = moreRayCalc.normalize();
+          reflectRay.direction(moreRayCalc.x,moreRayCalc.y,moreRayCalc.z);
+          float[] refl = findColor(reflectRay, depth + 1);
+          pxcolorR[0] += refl[0] * hitobj.getSurface().getK();
+          pxcolorR[1] += refl[1] * hitobj.getSurface().getK();
+          pxcolorR[2] += refl[2] * hitobj.getSurface().getK();
+        }
         
         pxcolor[0] = pxcolorD[0] + pxcolorS[0] + pxcolorR[0] + hitobj.getSurface().getCar();
         pxcolor[1] = pxcolorD[1] + pxcolorS[1] + pxcolorR[1] + hitobj.getSurface().getCag();
         pxcolor[2] = pxcolorD[2] + pxcolorS[2] + pxcolorR[2] + hitobj.getSurface().getCab();
         //pxColor = pxColorD + pxS + pxR + A;
       }
-      //set the pixel color
-      fill (pxcolor[0]*255, pxcolor[1]*255, pxcolor[2]*255);   // you should put the correct pixel color here, converting from [0,1] to [0,255]
-      rect (x, y, 1, 1);   // make a tiny rectangle to fill the pixel
-    }
-  }
+      return pxcolor;
 }
-
 
 void draw() {
   // nothing should be placed here for this project!

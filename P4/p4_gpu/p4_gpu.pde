@@ -1,3 +1,4 @@
+// Riley Goodling
 // Declare global variables
 PShader floor_shader;
 PShader circle_shader;

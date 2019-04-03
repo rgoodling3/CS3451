@@ -17,6 +17,17 @@ varying vec3 vertLightDir;
 varying vec4 vertTexCoord;
 
 void main() {
-  gl_FragColor = vec4(1.0, vertTexCoord.t, vertTexCoord.t, 1.0);
+  float zx = 3 * vertTexCoord.x - 1.5;
+  float zy = 3 * vertTexCoord.y - 1.5;
+  for(int i = 0; i < 21; i++) {
+    float tempzx = zx * zx - zy * zy + cx;
+    zy = 2 * zx * zy + cy;
+    zx = tempzx;
+  }
+  if ((zx * zx) + (zy * zy) < 16) {
+    gl_FragColor = vec4(1.0, 1.0 ,1.0 , 1.0);
+  } else {
+    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+  }
+  
 }
-

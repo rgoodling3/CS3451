@@ -34,6 +34,6 @@ void main() {
   vec4 normie = vec4(normal.x * intensity * 100, normal.y * intensity * 100, normal.z * intensity * 100, 0);
 
   vec4 pos = vertex;
-  pos += normie;
+  pos -= normie;
   gl_Position = transform * pos;
 }

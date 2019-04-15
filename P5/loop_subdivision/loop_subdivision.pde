@@ -3,6 +3,10 @@
 float time = 0;  // keep track of passing of time
 boolean rotate_flag = true;       // automatic rotation of model?
 
+mesh Mesh = new mesh();
+boolean rand_color = false;
+boolean per_vertex = false;
+
 // initialize stuff
 void setup() {
   size(700, 700, OPENGL);  // must use OPENGL here !!!
@@ -40,14 +44,29 @@ void draw() {
   rotate (time, 0.0, 1.0, 0.0);
   
   // THIS IS WHERE YOU SHOULD DRAW THE MESH
-  
-  beginShape();
-  normal (0.0, 0.0, 1.0);
-  vertex (-1.0, -1.0, 0.0);
-  vertex ( 1.0, -1.0, 0.0);
-  vertex ( 1.0,  1.0, 0.0);
-  vertex (-1.0,  1.0, 0.0);
-  endShape(CLOSE);
+  Mesh.mesh_assemble();
+  for (int i = 0; i < Mesh.corner_table.size(); i++){
+    if(i % 3 == 0) {
+      beginShape();
+      if (rand_color == true){
+        PVector c = Mesh.face_colors.get(i);
+        fill(c.x, c.y, c.z);
+      }
+    }
+    if (per_vertex == true){  
+      PVector vert = Mesh.get_vertex(i);
+      PVector norm = Mesh.vertex_normals_list[Mesh.corner_table.get(i)];
+      normal(norm.x,norm.y,norm.z);
+      vertex(vert.x, vert.y, vert.z);
+    } 
+    else{
+      PVector vert = Mesh.get_vertex(i);
+      vertex(vert.x, vert.y, vert.z);
+    }
+    if(i % 3 == 2) {
+      endShape(CLOSE);
+    }
+  }
   
   popMatrix();
  
@@ -75,9 +94,21 @@ void keyPressed() {
   }
   else if (key == 'n') {
     // toggle per-vertex normals
+    if (per_vertex == true){
+      per_vertex = false;
+    }
+    else {
+      per_vertex = true;
+    }
   }
   else if (key == 'r') {
     // random colors
+    if (rand_color == true){
+      rand_color = false;
+    }
+    else {
+      rand_color = true;
+    }
   }
   else if (key == 's') {
     // subdivide mesh
@@ -96,6 +127,7 @@ void keyPressed() {
 // into a mesh data structure instead of printing it to the screen.
 void read_mesh (String filename)
 {
+  Mesh = new mesh();
   int i;
   String[] words;
   
@@ -116,6 +148,8 @@ void read_mesh (String filename)
     float y = float(words[1]);
     float z = float(words[2]);
     println ("vertex = " + x + " " + y + " " + z);
+    //put in mesh
+    Mesh.add_vertex(x,y,z);
   }
   
   // read in the faces
@@ -134,5 +168,7 @@ void read_mesh (String filename)
     int index2 = int(words[2]);
     int index3 = int(words[3]);
     println ("face = " + index1 + " " + index2 + " " + index3);
+    Mesh.add_corners(index1, index2, index3);
   }
+  Mesh.mesh_assemble();
 }

@@ -1,7 +1,7 @@
  class mesh{
   ArrayList<PVector> vertex_table;
   ArrayList<Integer> corner_table;
-  ArrayList<Integer> opposite_table;
+  int[] opposite_table;
   ArrayList<PVector> face_normals_list;
   PVector[] vertex_normals_list;
   ArrayList<PVector> face_colors;
@@ -10,7 +10,6 @@
     vertex_table = new ArrayList<PVector>() ;
     corner_table = new ArrayList<Integer>();
     corner_table = new ArrayList<Integer>() ;
-    opposite_table = new ArrayList<Integer>() ;
     face_normals_list = new ArrayList<PVector>() ;
     face_colors = new ArrayList<PVector> ();
   }
@@ -19,6 +18,7 @@
     generating_random_face_colors();
     generating_vertex_normals();
     generating_face_normals();
+    generating_opposite_table();
   }
   void add_vertex(float x, float y, float z) {
     vertex_table.add(new PVector(x,y,z));
@@ -32,14 +32,19 @@
   }
   
   void generating_opposite_table(){
-    for(int a: corner_table){
-      for(int b: corner_table){
-        if(get_next(a) == get_previous(b) && get_next(b) == get_previous(a)){
-          opposite_table.add(a,b);
-          opposite_table.add(b,a);
+    opposite_table = new int[corner_table.size()];
+    for(int a = 0; a < corner_table.size(); a++){
+      for(int b = 0; b < corner_table.size(); b++){
+        if(corner_table.get(get_next(a)) == corner_table.get(get_previous(b)) && corner_table.get(get_next(b)) == corner_table.get(get_previous(a))){
+          opposite_table[a] = b;
+          opposite_table[b] = a;
         }
       }
     }
+  }
+  
+  int get_adjacent(int c){
+    return get_previous(get_opposites(get_previous(c)));
   }
   
   void generating_face_normals(){
@@ -55,13 +60,6 @@
     }
   }
   
-  int swing(int c){
-    generating_opposite_table();
-    int o = opposite_table.get(get_next(c));
-    int swing = get_next(o);
-    return swing; 
-  }
-  
   void generating_vertex_normals(){
     generating_face_normals();
     vertex_normals_list = new PVector[vertex_table.size()];
@@ -73,11 +71,9 @@
   }
   
   void generating_random_face_colors(){
-    for(int i = 0; i < vertex_table.size(); i +=3){
+    for(int i = 0; i < vertex_table.size(); i++){
       PVector c = new PVector(random(255.0), random(255.0), random(255.0));
       face_colors.add(c);
-      face_colors.add(c);
-      face_colors.add(c);;
     }
   }
   
@@ -95,7 +91,7 @@
   }
   
   int get_opposites(int i){
-    return opposite_table.get(i);
+    return opposite_table[i];
   }
   
   void get_face_number(){

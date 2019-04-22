@@ -111,7 +111,6 @@ void keyPressed() {
     }
   }
   else if (key == 'r') {
-    System.out.println(Mesh.face_colors.size());
     Mesh.mesh_assemble();
     // random colors
     if (rand_color == true){
@@ -184,23 +183,6 @@ void read_mesh (String filename)
     Mesh.add_corners(index1, index2, index3);
   }
   Mesh.mesh_assemble();
-  //System.out.println(" ");
-  //System.out.println("O Table");
-  //for(int r = 0; r < Mesh.opposite_table.length; r++) {
-  //  System.out.print(Mesh.opposite_table[r]);
-  //}
-  //System.out.println(" ");
-  //System.out.println(" ");
-  //System.out.println("C Table");
-  //for(int r = 0; r < Mesh.corner_table.size(); r++) {
-  //  System.out.print(Mesh.corner_table.get(r));
-  //}
-  //System.out.println(" ");
-  //System.out.println(" ");
-  //System.out.println("V Table");
-  //for(int r = 0; r < Mesh.vertex_table.size(); r++) {
-  //  System.out.print(Mesh.vertex_table.get(r));
-  //}
 }
 
 mesh subdivision(mesh Mesh){
@@ -213,10 +195,10 @@ mesh subdivision(mesh Mesh){
     int oldV = Mesh.corner_table.get(i);
     if(!visitedVerts.contains(oldV)){
       ArrayList<Integer> neighbors = new ArrayList<Integer>();
-      neighbors.add(Mesh.get_previous(Mesh.corner_table.get(i)));
+      neighbors.add(Mesh.corner_table.get(Mesh.get_previous(i)));
       int corner = Mesh.get_adjacent(i);
       while (corner != i) {
-        neighbors.add(Mesh.get_previous(Mesh.corner_table.get(corner)));
+        neighbors.add(Mesh.corner_table.get(Mesh.get_previous(corner)));
         corner = Mesh.get_adjacent(corner);
       }
       float b = 3/16.0;
@@ -224,10 +206,8 @@ mesh subdivision(mesh Mesh){
         b = 3/(8.0 * neighbors.size());
       }
       PVector newV = PVector.mult(Mesh.vertex_table.get(oldV),1 - neighbors.size() * b);
-      System.out.println(neighbors.size());
-      System.out.println(Mesh.vertex_table.size());
       for(int v = 0; v < neighbors.size(); v++){
-        newV = PVector.add(newV,PVector.mult(Mesh.vertex_table.get(v), b));
+        newV = PVector.add(newV,PVector.mult(Mesh.vertex_table.get(neighbors.get(v)), b));
       }
       newMesh.vertex_table.set(oldV, newV);
       visitedVerts.add(oldV);
